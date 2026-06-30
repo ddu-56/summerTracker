@@ -1,0 +1,808 @@
+/* =================================================================
+   Summer Progress Tracker — Global Styles
+   Design tokens, layout, components, and whimsical animations.
+   ================================================================= */
+
+/* ----------------------------------------------------------------
+   Variables & Theme
+   ---------------------------------------------------------------- */
+:root {
+  /* Color Palette */
+  --bg-main: #faf8f5;        /* Soft sandy canvas */
+  --bg-board: #f1ece4;       /* Warm linen bulletin board */
+  --bg-cork: #cdab73;        /* Warm cork surface */
+  --bg-cork-dark: #b8945c;   /* Cork speckle / shading */
+  --wood-frame: #8a5a2b;     /* Wooden board frame */
+  --wood-frame-dark: #6f4520;
+  --color-pin: #ff5964;      /* Cherry red pushpin */
+  --pin-needle: #9aa0a6;
+
+  --ink: #3a3633;            /* Primary text */
+  --ink-soft: #6f6a63;       /* Secondary text */
+  --line: #e7e0d6;           /* Hairlines / borders */
+
+  --shadow-coarse: 0 8px 16px rgba(0, 0, 0, 0.06);
+  --shadow-tactile: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.1);
+
+  /* Note Colors */
+  --color-workout: #ffadad;  /* Soft Pink */
+  --color-running: #a0c4ff;  /* Soft Blue */
+  --color-sports: #ffd6a5;   /* Soft Peach */
+  --color-leetcode: #caffbf; /* Soft Mint Green */
+  --color-project: #e8aeff;  /* Soft Lavender */
+  --color-research: #fdffb6; /* Soft Cream Yellow */
+  --color-general: #ffffff;  /* Classic White */
+
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+
+/* ----------------------------------------------------------------
+   Base
+   ---------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--ink);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 700;
+}
+
+a {
+  color: #2f6fdb;
+}
+
+/* ----------------------------------------------------------------
+   App Shell
+   ---------------------------------------------------------------- */
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 24px 48px;
+}
+
+/* ----------------------------------------------------------------
+   Toolbar
+   ---------------------------------------------------------------- */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+.brand .brand-sun {
+  color: #f7a823;
+  filter: drop-shadow(0 2px 3px rgba(247, 168, 35, 0.4));
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-tactile);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--color-pin);
+  border-color: var(--color-pin);
+  color: #fff;
+}
+
+.btn-ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.04);
+  box-shadow: none;
+}
+
+.btn.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.btn-icon {
+  padding: 8px;
+  border-radius: 50%;
+}
+
+/* ----------------------------------------------------------------
+   Calendar View
+   ---------------------------------------------------------------- */
+.calendar {
+  animation: fade-in 0.3s ease;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 8px 0 22px;
+}
+
+.calendar-title {
+  font-size: 1.7rem;
+  min-width: 280px;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.calendar-title .year {
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.today-btn {
+  margin-left: 6px;
+}
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink-soft);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.day-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  box-shadow: var(--shadow-coarse);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+
+.day-cell:hover {
+  transform: translateY(-3px) rotate(-0.4deg);
+  box-shadow: var(--shadow-hover);
+  border-color: #d8cfc1;
+}
+
+.day-cell.is-outside {
+  background: #f7f4ef;
+  color: #c4bcae;
+  box-shadow: none;
+}
+
+.day-cell.is-outside .day-number {
+  color: #c4bcae;
+}
+
+.day-number {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.6;
+  width: 1.9em;
+  height: 1.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.day-cell.is-today .day-number {
+  background: var(--color-pin);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 89, 100, 0.25);
+}
+
+.day-dots {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-content: flex-end;
+}
+
+.day-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.day-note-count {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: var(--bg-main);
+  border-radius: 999px;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+}
+
+/* ----------------------------------------------------------------
+   Bulletin Board
+   ---------------------------------------------------------------- */
+.board-view {
+  animation: fade-in 0.25s ease;
+}
+
+.board-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0 16px;
+}
+
+.board-date-title {
+  font-size: 1.5rem;
+}
+
+.board-date-title .weekday-label {
+  color: var(--ink-soft);
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.board-container {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  animation: board-zoom-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes board-zoom-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.board-surface {
+  position: relative;
+  height: 70vh;
+  min-height: 520px;
+  border-radius: 18px;
+  border: 14px solid var(--wood-frame);
+  background-color: var(--bg-cork);
+  background-image:
+    radial-gradient(circle at 18% 24%, rgba(0, 0, 0, 0.07) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 62% 44%, rgba(0, 0, 0, 0.06) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.10) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 35% 80%, rgba(0, 0, 0, 0.05) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 8% 60%, rgba(255, 255, 255, 0.08) 0 1.5px, transparent 2px);
+  background-size: 47px 47px, 63px 63px, 51px 51px, 71px 71px, 39px 39px;
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px var(--wood-frame-dark),
+    var(--shadow-hover);
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* Empty board prompt */
+.board-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: rgba(58, 54, 51, 0.55);
+  pointer-events: none;
+  user-select: none;
+}
+
+.board-empty .empty-pin {
+  opacity: 0.45;
+  animation: gentle-bob 3s ease-in-out infinite;
+}
+
+.board-empty p {
+  font-family: 'Playpen Sans', cursive;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+@keyframes gentle-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+/* Floating add-note button */
+.add-note-fab {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1000;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-pin);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(255, 89, 100, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.add-note-fab:hover {
+  transform: scale(1.08) rotate(90deg);
+  box-shadow: 0 12px 24px rgba(255, 89, 100, 0.6);
+}
+
+/* ----------------------------------------------------------------
+   Sticky Notes — they HANG from a pushpin (Option B)
+   Pivot at top-center; position via left/top, never transform.
+   ---------------------------------------------------------------- */
+.sticky-note {
+  position: absolute;
+  width: 188px;
+  transform-origin: top center;   /* pivot at the pushpin */
+  transform: rotate(var(--base-tilt, 0deg));
+  animation: note-hang-swing 4s ease-in-out infinite;
+  animation-delay: var(--sway-delay, 0s);
+  background: var(--note-color, #fff);
+  border-radius: 3px;
+  padding: 26px 14px 14px;
+  box-shadow: var(--shadow-tactile);
+  font-family: 'Playpen Sans', cursive;
+  color: #2d2a27;
+  cursor: grab;
+  user-select: none;
+}
+
+/* 1. Swaying / hanging animation — pivots from the pin, keeps base tilt */
+@keyframes note-hang-swing {
+  0%   { transform: rotate(calc(var(--base-tilt, 0deg) - 1.5deg)); }
+  50%  { transform: rotate(calc(var(--base-tilt, 0deg) + 1.5deg)); }
+  100% { transform: rotate(calc(var(--base-tilt, 0deg) - 1.5deg)); }
+}
+
+/* 2. Playful hover wiggle (pauses the sway for a snappy feel) */
+.sticky-note:hover {
+  animation: note-hover-wiggle 0.4s ease-in-out;
+  box-shadow: var(--shadow-hover);
+  z-index: 999;
+}
+
+@keyframes note-hover-wiggle {
+  0%   { transform: rotate(var(--base-tilt, 0deg)) scale(1.04); }
+  25%  { transform: rotate(calc(var(--base-tilt, 0deg) - 2deg)) scale(1.04); }
+  75%  { transform: rotate(calc(var(--base-tilt, 0deg) + 2deg)) scale(1.04); }
+  100% { transform: rotate(var(--base-tilt, 0deg)) scale(1.04); }
+}
+
+/* While dragging: freeze the sway so the cursor tracks precisely. */
+.sticky-note.dragging {
+  animation: none;
+  transform: rotate(var(--base-tilt, 0deg)) scale(1.03);
+  box-shadow: var(--shadow-hover);
+  cursor: grabbing;
+  z-index: 1000 !important;
+}
+
+/* Pushpin sits at the top-center — the visual pivot point. */
+.note-pin {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.3));
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.note-category {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.note-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.sticky-note:hover .note-actions {
+  opacity: 1;
+}
+
+.note-action-btn {
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  padding: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-action-btn:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.note-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.note-field {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.note-field-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(0, 0, 0, 0.45);
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+}
+
+.note-field-value {
+  white-space: pre-wrap;
+}
+
+.note-badge {
+  display: inline-block;
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'Quicksand', sans-serif;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.note-badge.diff-Easy   { background: #d6f5d6; color: #1f7a33; }
+.note-badge.diff-Medium { background: #fff0c2; color: #9a6b00; }
+.note-badge.diff-Hard   { background: #ffd6d6; color: #b32230; }
+
+.note-empty-hint {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.85rem;
+}
+
+/* ----------------------------------------------------------------
+   Modal (Note Form)
+   ---------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(40, 35, 30, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fade-in 0.2s ease;
+}
+
+.modal {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-main);
+  border-radius: 18px;
+  box-shadow: var(--shadow-hover);
+  overflow: hidden;
+  animation: modal-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modal-pop {
+  from { transform: scale(0.92) translateY(10px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);       opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+}
+
+.modal-body {
+  padding: 20px 22px;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 1px solid var(--line);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--color-pin);
+  box-shadow: 0 0 0 3px rgba(255, 89, 100, 0.18);
+}
+
+.field textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.category-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* ----------------------------------------------------------------
+   Progress Summary
+   ---------------------------------------------------------------- */
+.summary-panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-coarse);
+  animation: slide-down 0.25s ease;
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.summary-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  position: relative;
+  border-radius: var(--radius-sm);
+  padding: 14px 14px 13px;
+  background: var(--card-color, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-tactile);
+  transform: rotate(var(--card-tilt, 0deg));
+  transition: transform 0.15s ease;
+}
+
+.stat-card:hover {
+  transform: rotate(0deg) translateY(-2px);
+}
+
+.stat-card .stat-icon {
+  margin-bottom: 6px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 600;
+}
+
+.stat-sub {
+  font-size: 0.74rem;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 4px;
+}
+
+.summary-empty {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ----------------------------------------------------------------
+   Utility / shared animations
+   ---------------------------------------------------------------- */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ----------------------------------------------------------------
+   Accessibility: respect reduced motion.
+   Notes rest at their base tilt; views cross-fade instead of zoom.
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .sticky-note,
+  .sticky-note:hover,
+  .sticky-note.dragging {
+    animation: none;
+    transform: rotate(var(--base-tilt, 0deg));
+  }
+
+  .board-container {
+    animation: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .board-empty .empty-pin,
+  .add-note-fab:hover,
+  .day-cell:hover,
+  .stat-card:hover {
+    animation: none;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
